@@ -1,0 +1,39 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+ "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+ "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="simple" targetRuntime="MyBatis3">
+
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin" />
+		<plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+		<!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" /> -->
+		<plugin type="com.example.demo.mbg.plugins.OffsetLimitPlugin" />
+
+		<jdbcConnection
+			driverClass="${mybatis.generator.jdbcDriver}"
+			connectionURL="${mybatis.generator.jdbcURL}"
+			userId="${mybatis.generator.jdbcUserId}"
+			password="${mybatis.generator.jdbcPassword}" />
+
+		<javaModelGenerator
+			targetPackage="com.example.demo.domain.entity"
+			targetProject="src/main/java" />
+
+		<sqlMapGenerator
+			targetPackage="com.example.demo.domain.simple.repository"
+			targetProject="src/main/resources" />
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.example.demo.domain.simple.repository"
+			targetProject="src/main/java" />
+
+		<table tableName="t_order" domainObjectName="Order" mapperName="OrderRepository">
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
+		<table tableName="t_order_item" domainObjectName="OrderItem" mapperName="OrderItemRepository" />
+		<table tableName="t_item" domainObjectName="Item" mapperName="ItemRepository" />
+	</context>
+</generatorConfiguration>

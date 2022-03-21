@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.example</groupId>
+	<artifactId>demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.6.4</version>
+		<relativePath />
+	</parent>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.mybatis.generator</groupId>
+					<artifactId>mybatis-generator-maven-plugin</artifactId>
+					<version>1.4.1</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.h2database</groupId>
+							<artifactId>h2</artifactId>
+							<version>${h2.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>demo-mbg-plugins</artifactId>
+							<version>${project.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>demo-domain</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>demo-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<properties>
+		<java.version>11</java.version>
+
+		<!-- MyBatis Generator -->
+		<mybatis.generator.configurationFile>generatorConfig.xml</mybatis.generator.configurationFile>
+		<mybatis.generator.jdbcDriver>org.h2.Driver</mybatis.generator.jdbcDriver>
+		<mybatis.generator.jdbcURL>jdbc:h2:mem:temp;DB_CLOSE_DELAY=-1</mybatis.generator.jdbcURL>
+		<mybatis.generator.jdbcUserId></mybatis.generator.jdbcUserId>
+		<mybatis.generator.jdbcPassword></mybatis.generator.jdbcPassword>
+		<mybatis.generator.overwrite>true</mybatis.generator.overwrite>
+		<mybatis.generator.sqlScript>classpath:schema.sql</mybatis.generator.sqlScript>
+	</properties>
+
+	<modules>
+		<module>demo-domain</module>
+		<module>demo-web</module>
+		<module>demo-mbg-plugins</module>
+	</modules>
+
+</project>
