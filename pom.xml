@@ -41,6 +41,11 @@
 							<version>${h2.version}</version>
 						</dependency>
 						<dependency>
+							<groupId>org.postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<version>${postgresql.version}</version>
+						</dependency>
+						<dependency>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>demo-mbg-plugins</artifactId>
 							<version>${project.version}</version>
@@ -78,12 +83,20 @@
 
 		<!-- MyBatis Generator -->
 		<mybatis.generator.configurationFile>generatorConfig.xml</mybatis.generator.configurationFile>
+		<mybatis.generator.overwrite>true</mybatis.generator.overwrite>
+		
+		<mybatis.generator.jdbcDriver>org.postgresql.Driver</mybatis.generator.jdbcDriver>
+		<mybatis.generator.jdbcURL>jdbc:postgresql://localhost:5432/demo</mybatis.generator.jdbcURL>
+		<mybatis.generator.jdbcUserId>postgres</mybatis.generator.jdbcUserId>
+		<mybatis.generator.jdbcPassword>postgres</mybatis.generator.jdbcPassword>
+		<mybatis.generator.sqlScript>classpath:schema-postgres.sql</mybatis.generator.sqlScript>
+		<!-- 
 		<mybatis.generator.jdbcDriver>org.h2.Driver</mybatis.generator.jdbcDriver>
-		<mybatis.generator.jdbcURL>jdbc:h2:mem:temp;DB_CLOSE_DELAY=-1</mybatis.generator.jdbcURL>
+		<mybatis.generator.jdbcURL>jdbc:h2:mem:temp;MODE=PostgreSQL;IGNORECASE=TRUE;DB_CLOSE_DELAY=-1</mybatis.generator.jdbcURL>
 		<mybatis.generator.jdbcUserId></mybatis.generator.jdbcUserId>
 		<mybatis.generator.jdbcPassword></mybatis.generator.jdbcPassword>
-		<mybatis.generator.overwrite>true</mybatis.generator.overwrite>
 		<mybatis.generator.sqlScript>classpath:schema.sql</mybatis.generator.sqlScript>
+		-->
 	</properties>
 
 	<modules>

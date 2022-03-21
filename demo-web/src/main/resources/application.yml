@@ -1,21 +1,22 @@
 
 ## DataSource
-spring.datasource:
-  platform: h2
-  driverClassName: org.h2.Driver
-  url: jdbc:h2:mem:temp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
-  #username: postgres
-  #password: postgres
+#spring.datasource:
+#  platform: h2
+#  driverClassName: org.h2.Driver
+#  url: jdbc:h2:mem:temp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+#  #username: postgres
+#  #password: postgres
 
 
 spring.profiles:
   group:
     dev:
-      h2
+      h2,
       common
     prod:
-      postgres
+      postgres,
       common
     common:
-      domain
+      domain,
+      hoge
   default: dev

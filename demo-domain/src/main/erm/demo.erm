@@ -26,7 +26,7 @@
 	<font_name>Yu Gothic UI</font_name>
 	<font_size>9</font_size>
 	<settings>
-		<database>H2</database>
+		<database>PostgreSQL</database>
 		<capital>false</capital>
 		<table_style></table_style>
 		<notation></notation>
@@ -41,7 +41,7 @@
 		<suspend_validator>false</suspend_validator>
 		<export_setting>
 			<export_ddl_setting>
-				<output_path>src\main\erm\demo_h2.sql</output_path>
+				<output_path>src\main\erm\demo_postgres.sql</output_path>
 				<encoding>UTF-8</encoding>
 				<line_feed>CR+LF</line_feed>
 				<is_open_after_saved>true</is_open_after_saved>
@@ -56,12 +56,12 @@
 					<create_tablespace>true</create_tablespace>
 					<create_trigger>true</create_trigger>
 					<create_view>true</create_view>
-					<drop_index>false</drop_index>
-					<drop_sequence>false</drop_sequence>
-					<drop_table>false</drop_table>
-					<drop_tablespace>false</drop_tablespace>
-					<drop_trigger>false</drop_trigger>
-					<drop_view>false</drop_view>
+					<drop_index>true</drop_index>
+					<drop_sequence>true</drop_sequence>
+					<drop_table>true</drop_table>
+					<drop_tablespace>true</drop_tablespace>
+					<drop_trigger>true</drop_trigger>
+					<drop_view>true</drop_view>
 					<inline_column_comment>false</inline_column_comment>
 					<inline_table_comment>false</inline_table_comment>
 					<comment_value_description>false</comment_value_description>
@@ -177,7 +177,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2022-03-19 22:00:54</creation_date>
-			<updated_date>2022-03-20 20:25:24</updated_date>
+			<updated_date>2022-03-21 19:52:46</updated_date>
 			<model_property>
 				<name>プロジェクト名</name>
 				<value></value>
@@ -201,6 +201,7 @@
 		</model_properties>
 		<table_properties>
 			<schema></schema>
+			<without_oids>true</without_oids>
 		</table_properties>
 		<environment_setting>
 			<environment>
@@ -419,6 +420,7 @@
 			</complex_unique_key_list>
 			<table_properties>
 				<schema></schema>
+				<without_oids>true</without_oids>
 			</table_properties>
 		</table>
 		<table>
@@ -516,6 +518,7 @@
 			</complex_unique_key_list>
 			<table_properties>
 				<schema></schema>
+				<without_oids>true</without_oids>
 			</table_properties>
 		</table>
 		<table>
@@ -613,6 +616,7 @@
 			</complex_unique_key_list>
 			<table_properties>
 				<schema></schema>
+				<without_oids>true</without_oids>
 			</table_properties>
 		</table>
 	</contents>

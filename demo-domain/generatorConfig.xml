@@ -31,7 +31,7 @@
 			targetProject="src/main/java" />
 
 		<table tableName="t_order" domainObjectName="Order" mapperName="OrderRepository">
-			<generatedKey column="id" sqlStatement="JDBC"/>
+			<generatedKey column="id" sqlStatement="JDBC" identity="true"/>
 		</table>
 		<table tableName="t_order_item" domainObjectName="OrderItem" mapperName="OrderItemRepository" />
 		<table tableName="t_item" domainObjectName="Item" mapperName="ItemRepository" />

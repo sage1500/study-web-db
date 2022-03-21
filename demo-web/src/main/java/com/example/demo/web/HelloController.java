@@ -23,7 +23,7 @@ public class HelloController {
 		log.info("[HELLO] hello");
 
 		Order order = new Order().withStatusCode(1);
-		orderRepository.insertSelective(order);
+		orderRepository.insert(order);
 		
 		log.info("[HELLO] insert after id={}", order.getId());
 
