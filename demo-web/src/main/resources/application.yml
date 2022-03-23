@@ -10,7 +10,8 @@
 
 spring.profiles:
   group:
-    dev:
+    local:
+      dev,
       h2,
       common
     prod:
@@ -19,4 +20,4 @@ spring.profiles:
     common:
       domain,
       hoge
-  default: dev
+  default: local
