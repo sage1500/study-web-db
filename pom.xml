@@ -31,19 +31,35 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>sql-maven-plugin</artifactId>
+					<version>${org.codehaus.mojo.sql-maven-plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>${db.groupId}</groupId>
+							<artifactId>${db.artifactId}</artifactId>
+							<version>${db.version}</version>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<driver>${db.driver}</driver>
+						<username>${db.username}</username>
+						<password>${db.password}</password>
+						<encoding>${db.encoding}</encoding>
+						<delimiter>${db.delimiter}</delimiter>
+						<delimiterType>${db.delimiterType}</delimiterType>
+					</configuration>
+				</plugin>
+
+				<plugin>
 					<groupId>org.mybatis.generator</groupId>
 					<artifactId>mybatis-generator-maven-plugin</artifactId>
 					<version>1.4.1</version>
 					<dependencies>
 						<dependency>
-							<groupId>com.h2database</groupId>
-							<artifactId>h2</artifactId>
-							<version>${h2.version}</version>
-						</dependency>
-						<dependency>
-							<groupId>org.postgresql</groupId>
-							<artifactId>postgresql</artifactId>
-							<version>${postgresql.version}</version>
+							<groupId>${db.groupId}</groupId>
+							<artifactId>${db.artifactId}</artifactId>
+							<version>${db.version}</version>
 						</dependency>
 						<dependency>
 							<groupId>${project.groupId}</groupId>
@@ -80,24 +96,105 @@
 
 	<properties>
 		<java.version>11</java.version>
-
-		<!-- MyBatis Generator -->
-		<mybatis.generator.configurationFile>generatorConfig.xml</mybatis.generator.configurationFile>
-		<mybatis.generator.overwrite>true</mybatis.generator.overwrite>
-		
-		<mybatis.generator.jdbcDriver>org.postgresql.Driver</mybatis.generator.jdbcDriver>
-		<mybatis.generator.jdbcURL>jdbc:postgresql://localhost:5432/demo</mybatis.generator.jdbcURL>
-		<mybatis.generator.jdbcUserId>postgres</mybatis.generator.jdbcUserId>
-		<mybatis.generator.jdbcPassword>postgres</mybatis.generator.jdbcPassword>
-		<mybatis.generator.sqlScript>classpath:schema-postgres.sql</mybatis.generator.sqlScript>
-		<!-- 
-		<mybatis.generator.jdbcDriver>org.h2.Driver</mybatis.generator.jdbcDriver>
-		<mybatis.generator.jdbcURL>jdbc:h2:mem:temp;MODE=PostgreSQL;IGNORECASE=TRUE;DB_CLOSE_DELAY=-1</mybatis.generator.jdbcURL>
-		<mybatis.generator.jdbcUserId></mybatis.generator.jdbcUserId>
-		<mybatis.generator.jdbcPassword></mybatis.generator.jdbcPassword>
-		<mybatis.generator.sqlScript>classpath:schema.sql</mybatis.generator.sqlScript>
-		-->
+		<org.codehaus.mojo.sql-maven-plugin.version>1.5</org.codehaus.mojo.sql-maven-plugin.version>
 	</properties>
+
+	<profiles>
+		<!-- Database選択 -->
+		<profile>
+			<id>postgresql</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<db.encoding>UTF8</db.encoding>
+				<db.host>127.0.0.1:5432</db.host>
+				<db.database>postgres</db.database>
+				<db.database.mbg>mbg</db.database.mbg>
+				<db.url>jdbc:postgresql://${db.host}/${db.database}</db.url>
+				<db.url.mbg>jdbc:postgresql://${db.host}/${db.database.mbg}</db.url.mbg>
+				<db.username>postgres</db.username>
+				<db.password>postgres</db.password>
+				<db.driver>org.postgresql.Driver</db.driver>
+				<db.groupId>org.postgresql</db.groupId>
+				<db.artifactId>postgresql</db.artifactId>
+				<db.version>${postgresql.version}</db.version>
+				<db.delimiter>;</db.delimiter>
+				<db.delimiterType>row</db.delimiterType>
+			</properties>
+		</profile>
+
+		<!-- DAOコード生成 -->
+		<!-- ※コマンド例) $ mvn -Pgenerate-dao,postgresql -->
+		<profile>
+			<id>generate-dao</id>
+			<properties>
+				<mybatis.generator.configurationFile>generatorConfig.xml</mybatis.generator.configurationFile>
+				<mybatis.generator.overwrite>true</mybatis.generator.overwrite>
+				<mybatis.generator.jdbcDriver>${db.driver}</mybatis.generator.jdbcDriver>
+				<mybatis.generator.jdbcURL>${db.url.mbg}</mybatis.generator.jdbcURL>
+				<mybatis.generator.jdbcUserId>${db.username}</mybatis.generator.jdbcUserId>
+				<mybatis.generator.jdbcPassword>${db.password}</mybatis.generator.jdbcPassword>
+				<!--
+				<mybatis.generator.sqlScript>${project.basedir}/../database/sql/create/001_create_demo.sql</mybatis.generator.sqlScript>
+				-->
+			</properties>
+			<build>
+				<defaultGoal>generate-sources</defaultGoal>
+				<plugins>
+					<!-- コード生成用データベース再作成 -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>drop-database</id>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<phase>initialize</phase>
+								<configuration>
+									<autocommit>true</autocommit>
+									<onError>continue</onError>
+									<skip>false</skip>
+									<sqlCommand>DROP DATABASE ${db.database.mbg}</sqlCommand>
+								</configuration>
+							</execution>
+							<execution>
+								<id>create-database</id>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<phase>initialize</phase>
+								<configuration>
+									<autocommit>true</autocommit>
+									<skip>false</skip>
+									<sqlCommand>CREATE DATABASE ${db.database.mbg}</sqlCommand>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+							<url>${db.url}</url>
+						</configuration>
+					</plugin>
+					<!-- コード生成 -->
+					<plugin>
+						<groupId>org.mybatis.generator</groupId>
+						<artifactId>mybatis-generator-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>generate-dao</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<phase>generate-sources</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<modules>
 		<module>demo-domain</module>

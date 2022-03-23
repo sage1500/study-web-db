@@ -39,4 +39,9 @@
 		</dependency>
 	</dependencies>
 
+	<properties>
+		<!-- MyBatis Generator -->
+		<mybatis.generator.sqlScript>${project.basedir}/../database/sql/create/001_create_demo.sql</mybatis.generator.sqlScript>
+	</properties>
+
 </project>
