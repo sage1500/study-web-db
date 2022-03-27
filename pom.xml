@@ -83,6 +83,11 @@
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
+				<artifactId>demo-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>demo-domain</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -197,6 +202,7 @@
 	</profiles>
 
 	<modules>
+		<module>demo-common</module>
 		<module>demo-domain</module>
 		<module>demo-web</module>
 		<module>demo-mbg-plugins</module>
