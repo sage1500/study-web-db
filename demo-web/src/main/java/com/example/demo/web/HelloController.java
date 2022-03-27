@@ -2,6 +2,7 @@ package com.example.demo.web;
 
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -27,6 +28,14 @@ public class HelloController {
 		
 		log.info("[HELLO] insert after id={}", order.getId());
 
+		
+		var secctx = SecurityContextHolder.getContext();
+		if (secctx == null) {
+			log.info("SecurityContext is null");
+		} else {
+			log.info("SecurityContext is not null: auth={}", secctx.getAuthentication());
+		}
+		
 		return "hello";
 	}
 

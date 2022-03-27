@@ -1,23 +1,24 @@
 
-## DataSource
-#spring.datasource:
-#  platform: h2
-#  driverClassName: org.h2.Driver
-#  url: jdbc:h2:mem:temp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
-#  #username: postgres
-#  #password: postgres
-
-
 spring.profiles:
   group:
     local:
-      dev,
-      h2,
-      common
+      - dev
+      - h2
+      - common
     prod:
-      postgres,
-      common
+      - postgres
+      - common
     common:
-      domain,
-      hoge
+      - domain
+      - hoge
+      - oauth2login
   default: local
+
+
+##
+services.auth:
+  base-url: http://localhost:8080/auth
+
+##
+spring.session:
+  store-type: none

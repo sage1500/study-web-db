@@ -1,0 +1,23 @@
+##
+spring.security.oauth2.client.registration:
+  publicapp:
+    provider: keycloak
+    client-id: publicapp
+    #client-secret:
+    #client-authentication-method: none
+    authorization-grant-type: authorization_code
+    redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+    scope: openid, profile, email
+    #client-name:
+
+##
+spring.security.oauth2.client.provider:
+  keycloak:
+    authorization-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/auth
+    token-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/token
+    user-info-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/userinfo
+    #user-info-authentication-method:
+    user-name-attribute: sub
+    jwk-set-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/certs
+    #issuer-uri: ${services.auth.base-url}/realms/demo
+ 
