@@ -13,11 +13,11 @@ spring.security.oauth2.client.registration:
 ##
 spring.security.oauth2.client.provider:
   keycloak:
-    authorization-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/auth
-    token-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/token
-    user-info-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/userinfo
+    authorization-uri: ${services.auth.base-realm-url}/protocol/openid-connect/auth
+    token-uri: ${services.auth.base-realm-url}/protocol/openid-connect/token
+    user-info-uri: ${services.auth.base-realm-url}/protocol/openid-connect/userinfo
     #user-info-authentication-method:
-    user-name-attribute: sub
-    jwk-set-uri: ${services.auth.base-url}/realms/demo/protocol/openid-connect/certs
+    user-name-attribute: preferred_username
+    jwk-set-uri: ${services.auth.base-realm-url}/protocol/openid-connect/certs
     #issuer-uri: ${services.auth.base-url}/realms/demo
  

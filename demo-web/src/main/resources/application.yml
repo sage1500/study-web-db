@@ -17,8 +17,18 @@ spring.profiles:
 
 ##
 services.auth:
-  base-url: http://localhost:8080/auth
-
+  realm: demo
+  base-url: http://localhost:18080/auth
+  base-realm-url: ${services.auth.base-url}/realms/${services.auth.realm}
+  logout-uri: ${services.auth.base-realm-url}/protocol/openid-connect/logout 
+  
 ##
 spring.session:
   store-type: none
+
+##
+server.tomcat:
+  basedir: target/tomcat.${server.port:8080}
+
+logging:
+  pattern.console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %X{username:--} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"

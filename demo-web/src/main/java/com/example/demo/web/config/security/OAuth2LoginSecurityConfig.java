@@ -1,39 +1,40 @@
-package com.example.demo.web.config;
+package com.example.demo.web.config.security;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+
+import com.example.demo.web.logging.DemoFilter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Configuration
 @EnableWebSecurity
+@Order(SecurityProperties.BASIC_AUTH_ORDER - 10 + 3)
 @RequiredArgsConstructor
 @Slf4j
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final ClientRegistrationRepository clientRegistrationRepository;
 
 	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/management/health");
-	}
-
-	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.antMatcher("/**");
+
+		http.addFilterBefore(new DemoFilter(), ExceptionTranslationFilter.class);
+
 		// 認可設定
 		// @formatter:off
         http.authorizeRequests()
             .antMatchers("/").permitAll()
-            .antMatchers("/manage/**").permitAll()
-            //.anyRequest().authenticated()
-        	.anyRequest().permitAll()
+            .anyRequest().authenticated()
+        	//.anyRequest().permitAll()
         	;
         // @formatter:on
 
@@ -60,19 +61,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			logoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}/");
 			logout.logoutSuccessHandler(logoutSuccessHandler);
 		});
-
-		// @formatter:off
-		http.sessionManagement()
-			//.invalidSessionStrategy((reqest, response) -> {})
-			//.sessionAuthenticationFailureHandler((reqest, response, e) -> {})
-			//.sessionAuthenticationStrategy((auth, request, response) -> {})
-			.maximumSessions(10000);
-		http.exceptionHandling()
-			//.authenticationEntryPoint(((reqest, response, e) -> {})
-			//.accessDeniedHandler((reqest, response, e) -> {})
-			;
-        // @formatter:on
-
 	}
-
 }
