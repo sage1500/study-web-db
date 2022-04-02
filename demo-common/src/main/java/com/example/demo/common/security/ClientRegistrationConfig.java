@@ -1,10 +1,9 @@
-package com.example.demo.web.config.security;
+package com.example.demo.common.security;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesRegistrationAdapter;
@@ -14,10 +13,12 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class ClientRegistrationConfig {
-	@Value("${services.auth.logout-uri}")
-	private String logoutUri;
+	private final AuthenticationProperties authProps;
 
 	@Bean
 	@ConditionalOnMissingBean({ ClientRegistrationRepository.class })
@@ -25,7 +26,9 @@ public class ClientRegistrationConfig {
 		List<ClientRegistration> registrations = OAuth2ClientPropertiesRegistrationAdapter
 				.getClientRegistrations(properties).values().stream()
 				.map(o -> ClientRegistration.withClientRegistration(o)
-						.providerConfigurationMetadata(Map.of("end_session_endpoint", logoutUri)).build())
+						.providerConfigurationMetadata(
+								Map.of("end_session_endpoint", authProps.getOauth2login().getLogoutUri()))
+						.build())
 				.collect(Collectors.toList());
 
 		return new InMemoryClientRegistrationRepository(registrations);

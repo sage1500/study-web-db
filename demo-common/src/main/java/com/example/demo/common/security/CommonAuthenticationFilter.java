@@ -1,4 +1,4 @@
-package com.example.demo.web.logging;
+package com.example.demo.common.security;
 
 import java.io.IOException;
 
@@ -13,13 +13,14 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
-public class DemoFilter extends OncePerRequestFilter {
+public class CommonAuthenticationFilter extends OncePerRequestFilter {
 
 	private static String MDC_KEY_USERNAME = "username";
-	private static String ATTR_NAME_AUTH_INITIALIZED = "AUTH_INITIALIZED";
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,15 +37,6 @@ public class DemoFilter extends OncePerRequestFilter {
 				// MDC設定
 				username = authentication.getName();
 				MDC.put(MDC_KEY_USERNAME, username);
-
-				// 初期化判定
-				var initialized = request.getSession().getAttribute(ATTR_NAME_AUTH_INITIALIZED);
-				if (!"true".equals(initialized)) {
-					request.getSession().setAttribute(ATTR_NAME_AUTH_INITIALIZED, "true");
-					log.info("1st proc: [{}]", initialized);
-				} else {
-					log.info("2nd proc");
-				}
 			}
 
 			filterChain.doFilter(request, response);

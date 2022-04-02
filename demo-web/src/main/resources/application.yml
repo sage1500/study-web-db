@@ -1,4 +1,4 @@
-
+## プロファイル設定
 spring.profiles:
   group:
     local:
@@ -11,24 +11,63 @@ spring.profiles:
     common:
       - domain
       - hoge
-      - oauth2login
+      - oauth2client
+      - oauth2client-public
   default: local
 
+## ログレベル設定
+logging.level:
+  '[com.example.demo]': debug
+  '[org.springframework.security]': info
 
-##
-services.auth:
-  realm: demo
-  base-url: http://localhost:18080/auth
-  base-realm-url: ${services.auth.base-url}/realms/${services.auth.realm}
-  logout-uri: ${services.auth.base-realm-url}/protocol/openid-connect/logout 
-  
-##
+## ログファイル設定
+logging:
+  file:
+    path: target
+    name: ${logging.file.path}/hoge.log
+  logback:
+    rollingpolicy:
+      clean-history-on-start: true
+      file-name-pattern: ${logging.file.path}/hoge-%d{yyyy-MM-dd}.%i.log
+      max-history: 7
+      max-file-size: 10KB
+
+## Spring Session
 spring.session:
   store-type: none
 
-##
+## Tomcat
 server.tomcat:
   basedir: target/tomcat.${server.port:8080}
 
-logging:
-  pattern.console: "%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %X{username:--} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+server.servlet:
+  context-path: /demo
+
+## エラーページ設定
+server.error:
+  path: /error
+  include-binding-errors: always
+  include-exception: true
+  include-message: always
+  include-stacktrace: never
+  whitelabel.enabled: false
+
+## 認証
+common.auth:
+  enabled: true
+  failure-url: ${server.error.path}
+  oauth2login:
+    enabled: true
+    base-uri: http://localhost:18080/auth/realms/demo
+    logout-uri: ${common.auth.oauth2login.base-uri}/protocol/openid-connect/logout
+    client-id: publicapp
+    client-secret:
+
+## データベース
+common.datasource:
+  host: localhost
+  port: 5432
+  database: postgres
+  username: postgres
+  password: postgres
+

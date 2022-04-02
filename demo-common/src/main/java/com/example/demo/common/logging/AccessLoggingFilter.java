@@ -1,4 +1,4 @@
-package com.example.demo.web.logging;
+package com.example.demo.common.logging;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
@@ -21,7 +22,7 @@ import org.springframework.web.util.NestedServletException;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Order(Integer.MIN_VALUE)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class AccessLoggingFilter implements Filter {
 

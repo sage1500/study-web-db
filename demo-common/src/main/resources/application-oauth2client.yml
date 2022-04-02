@@ -1,0 +1,10 @@
+## OAuth2 Client Provider
+spring.security.oauth2.client.provider:
+  keycloak:
+    authorization-uri: ${common.auth.oauth2login.base-uri}/protocol/openid-connect/auth
+    token-uri: ${common.auth.oauth2login.base-uri}/protocol/openid-connect/token
+    user-info-uri: ${common.auth.oauth2login.base-uri}/protocol/openid-connect/userinfo
+    #user-info-authentication-method:
+    user-name-attribute: preferred_username
+    jwk-set-uri: ${common.auth.oauth2login.base-uri}/protocol/openid-connect/certs
+    #issuer-uri: ${common.auth.oauth2login.base-uri}

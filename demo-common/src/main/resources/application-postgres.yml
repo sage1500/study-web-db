@@ -1,0 +1,7 @@
+## DataSource
+spring.datasource:
+  platform: postgresql
+  driverClassName: org.postgresql.Driver
+  url: jdbc:postgresql://${common.datasource.host:localhost}:${common.datasource.port:5432}/${common.datasource.database:postgres}
+  username: ${common.datasource.username:postgres}
+  password: ${common.datasource.password:postgres}

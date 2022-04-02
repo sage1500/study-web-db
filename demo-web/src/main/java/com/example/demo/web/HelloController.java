@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HelloController {
 	private final OrderRepository orderRepository;
 
+	//@Secured("ROLE_ADMIN")
 	@GetMapping("/hello")
 	public String hello(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("[HELLO] hello");
@@ -38,9 +39,9 @@ public class HelloController {
 			log.info("SecurityContext is not null: auth={}", secctx.getAuthentication());
 		}
 		
-//		if (true) {
-//			throw new RuntimeException("test");
-//		}
+		if (false) {
+			throw new RuntimeException("test");
+		}
 
 		return "hello";
 		// return "redirect:/hello2";
