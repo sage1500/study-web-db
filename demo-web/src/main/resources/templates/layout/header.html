@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<header class="bd-header py-3 d-flex align-items-stretch border-bottom my-header" layout:fragment="header">
+  <div class="container-fluid d-flex align-items-center my-logo">
+    <h1 class="d-flex align-items-center fs-4 mb-0">ロゴ</h1>
+    <a th:if="${#request.servletPath == '/'}" href="#" class="ms-auto btn btn-light">ボタン</a>
+  </div>
+</header>
+</body>
+</html>

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class AuthenticationProperties {
 	private boolean enabled = false;
-	private String[] ignorePaths = { "/css/**", "/js/**", "/img/**", "/management/health" };
+	private String[] ignorePaths = { "/css/**", "/js/**", "/img/**", "/webjars/**", "/management/health" };
 	private String[] permitPaths = { "/" };
 	private String postLogoutRedirectUri = "{baseUrl}/";
 	private String failureUrl = "/error";
