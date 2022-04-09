@@ -11,6 +11,10 @@
 <body layout:fragment="content">
 	Hello
 	
+	<form th:action="@{/hello}" method="post">
+		<button name="post">Post</button>
+	</form>
+	
 	<form th:action="@{/logout}" method="post">
 		<button>ログアウト</button>
 	</form>

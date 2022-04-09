@@ -23,8 +23,8 @@
 							<li><a class="dropdown-item" href="#">Action</a></li>
 							<li><a class="dropdown-item" href="#">Another action</a></li>
 							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Something else
-									here</a></li>
+							<li><a class="dropdown-item" th:href="@{/hello}">Hello</a></li>
+							<li><form th:action="@{/logout}" method="post"><button class="dropdown-item">ログアウト</button></form></li>
 						</ul></li>
 				</ul>
 			</div>
