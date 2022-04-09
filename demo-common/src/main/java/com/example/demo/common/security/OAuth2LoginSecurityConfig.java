@@ -62,9 +62,7 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 								params.put("ui_locales", locale.getLanguage());
 							}));
 					authorization.authorizationRequestResolver(authorizationRequestResolver);
-				})
-				.failureHandler(failureHandler())
-			);
+				}).failureHandler(failureHandler()));
 
 		// ログアウト
 		http.logout(logout -> {
@@ -73,12 +71,15 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 			logoutSuccessHandler.setPostLogoutRedirectUri(authProps.getPostLogoutRedirectUri());
 			logout.logoutSuccessHandler(logoutSuccessHandler);
 		});
+
+		//
+		http.sessionManagement().invalidSessionUrl("/error?type=invalidSession");
 	}
-	
+
 	private AuthenticationFailureHandler failureHandler() {
 		// TODO ログを仕込むためだけに拡張するべきか
 		var handler = new SimpleUrlAuthenticationFailureHandler(authProps.getFailureUrl());
-		//handler.setUseForward(true);
+		// handler.setUseForward(true);
 		return handler;
 	}
 }

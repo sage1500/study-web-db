@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layout/layout">
+<head>
+<meta charset="UTF-8">
+<title>Error</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link th:href="@{/css/common.css}" rel="stylesheet">
+</head>
+<body layout:fragment="content">セッションが無効になりました。
+
+<a th:href="@{/}">トップ</a>
+
+</body>
+</html>

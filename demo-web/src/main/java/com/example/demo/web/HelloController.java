@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.entity.OrderExample;
@@ -65,6 +66,12 @@ public class HelloController {
 	@GetMapping("/basic/hello")
 	public String hello3() {
 		log.info("[HELLO] hello3");
+		return "hello";
+	}
+	
+	@PostMapping(path = "/hello", params = "post")
+	public String helloPost() {
+		log.info("[HELLO] helloPost");
 		return "hello";
 	}
 
