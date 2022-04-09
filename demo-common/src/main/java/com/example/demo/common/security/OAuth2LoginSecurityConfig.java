@@ -82,8 +82,10 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 初回アクセスでセッションがないときも呼ばれることに注意。
 		//http.sessionManagement().invalidSessionUrl("/error?type=invalidSession");
 
-		//
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+		
+		// 認証処理の開始処理のため、上書きしてはいけない。
+		//http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 	}
 
 	private AuthenticationFailureHandler failureHandler() {
