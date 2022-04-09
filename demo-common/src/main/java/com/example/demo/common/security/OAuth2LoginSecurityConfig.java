@@ -106,7 +106,6 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 			new DefaultRedirectStrategy().sendRedirect(request, response, "/error?type=invalidSession");
 		});
 		
-		var handler = new DelegatingAccessDeniedHandler(handlers, new AccessDeniedHandlerImpl());
-		return handler;
+		return new DelegatingAccessDeniedHandler(handlers, new AccessDeniedHandlerImpl());
 	}
 }
