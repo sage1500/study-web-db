@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
@@ -60,7 +61,8 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.oauth2Login(oauth2 -> oauth2 //
 				.authorizationEndpoint(authorization -> {
 					DefaultOAuth2AuthorizationRequestResolver authorizationRequestResolver = new DefaultOAuth2AuthorizationRequestResolver(
-							clientRegistrationRepository, "/oauth2/authorization");
+							clientRegistrationRepository,
+							OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
 					authorizationRequestResolver
 							.setAuthorizationRequestCustomizer(customizer -> customizer.additionalParameters(params -> {
 								var locale = LocaleContextHolder.getLocale();
@@ -80,12 +82,12 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// セッションがないときにどうするか？という設定
 		// 初回アクセスでセッションがないときも呼ばれることに注意。
-		//http.sessionManagement().invalidSessionUrl("/error?type=invalidSession");
+		// http.sessionManagement().invalidSessionUrl("/error?type=invalidSession");
 
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
-		
+
 		// 認証処理の開始処理のため、上書きしてはいけない。
-		//http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
+		// http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 	}
 
 	private AuthenticationFailureHandler failureHandler() {
@@ -99,16 +101,16 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 		//
 		// 例外により挙動変更
 		// - MissingCsrfTokenException: セッション切れ判定
-		//   - Spring Session が有効になっていないと、この挙動にならない（？）
+		// - Spring Session が有効になっていないと、この挙動にならない（？）
 		// - 上記以外: デフォルト実装(403エラー)
 		//
-		
+
 		var handlers = new LinkedHashMap<Class<? extends AccessDeniedException>, AccessDeniedHandler>();
 
 		handlers.put(MissingCsrfTokenException.class, (request, response, e) -> {
 			new DefaultRedirectStrategy().sendRedirect(request, response, "/error?type=invalidSession");
 		});
-		
+
 		return new DelegatingAccessDeniedHandler(handlers, new AccessDeniedHandlerImpl());
 	}
 }
