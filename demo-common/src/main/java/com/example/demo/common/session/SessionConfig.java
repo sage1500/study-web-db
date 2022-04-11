@@ -1,4 +1,4 @@
-package com.example.demo.web.config;
+package com.example.demo.common.session;
 
 import java.util.concurrent.ConcurrentHashMap;
 

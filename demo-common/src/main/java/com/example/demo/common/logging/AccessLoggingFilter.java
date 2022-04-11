@@ -22,7 +22,7 @@ import org.springframework.web.util.NestedServletException;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE + 6) // sleuth の order + 1 ※どこかのバージョンから Ordered.HIGHEST_PRECEDENCE でもよくなった？
 @Slf4j
 public class AccessLoggingFilter implements Filter {
 

@@ -99,6 +99,7 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 		//
 		// 例外により挙動変更
 		// - MissingCsrfTokenException: セッション切れ判定
+		//   - Spring Session が有効になっていないと、この挙動にならない（？）
 		// - 上記以外: デフォルト実装(403エラー)
 		//
 		

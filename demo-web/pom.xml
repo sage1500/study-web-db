@@ -59,12 +59,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
-		
+
+		<!-- TERASOLUNA -->
+		<dependency>
+		    <groupId>org.terasoluna.gfw</groupId>
+		    <artifactId>terasoluna-gfw-web</artifactId>
+		    <version>5.7.1.SP1.RELEASE</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
