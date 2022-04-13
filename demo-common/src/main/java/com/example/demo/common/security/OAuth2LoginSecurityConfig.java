@@ -70,7 +70,9 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 								params.put("ui_locales", locale.getLanguage());
 							}));
 					authorization.authorizationRequestResolver(authorizationRequestResolver);
-				}).failureHandler(failureHandler()));
+				})//
+				.defaultSuccessUrl("/hello2", true) // ログイン後に遷移する画面を指定する場合
+				.failureHandler(failureHandler()));
 
 		// ログアウト
 		http.logout(logout -> {
