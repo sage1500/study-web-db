@@ -13,6 +13,7 @@ public class AuthenticationProperties {
 	private String postLogoutRedirectUri = "{baseUrl}/";
 	private String postLogoutUrl = "/";
 	private String failureUrl = "/error";
+	private String successUrl;
 	private OAuth2Login oauth2Login = new OAuth2Login();
 	private FormLogin formLogin = new FormLogin();
 
@@ -28,5 +29,6 @@ public class AuthenticationProperties {
 	@Data
 	public static class FormLogin {
 		private boolean enabled = false;
+		private String loginPage = "/login";
 	}
 }

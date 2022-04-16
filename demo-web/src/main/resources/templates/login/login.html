@@ -10,7 +10,11 @@
 </head>
 <body layout:fragment="content">
 
+
+ <form th:action="@{${@environment.getProperty('common.auth.form-login.login-page')}}" method="post">
+<!--
  <form th:action="@{/login}" method="post">
+--> 
     <fieldset>
         <legend>Please Login</legend>
         <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->

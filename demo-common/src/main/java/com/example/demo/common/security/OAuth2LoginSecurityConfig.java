@@ -1,14 +1,9 @@
 package com.example.demo.common.security;
 
-import java.util.LinkedHashMap;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,14 +11,8 @@ import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInit
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.access.DelegatingAccessDeniedHandler;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.csrf.MissingCsrfTokenException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,12 +30,6 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.antMatcher("/**");
 
-		// http.addFilterBefore(new DemoFilter(), ExceptionTranslationFilter.class);
-		http.addFilterBefore((req, rsp, chain) -> {
-			log.info("[WEB-OAuth2] {}", ((HttpServletRequest) req).getRequestURI());
-			chain.doFilter(req, rsp);
-		}, ExceptionTranslationFilter.class);
-
 		// 認可設定
 		if (authProps.isEnabled()) {
 			http.authorizeRequests() //
@@ -58,8 +41,8 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 
 		// OAuth2 ログイン
-		http.oauth2Login(oauth2 -> oauth2 //
-				.authorizationEndpoint(authorization -> {
+		http.oauth2Login(oauth2 -> {
+				oauth2.authorizationEndpoint(authorization -> {
 					DefaultOAuth2AuthorizationRequestResolver authorizationRequestResolver = new DefaultOAuth2AuthorizationRequestResolver(
 							clientRegistrationRepository,
 							OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
@@ -70,9 +53,12 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 								params.put("ui_locales", locale.getLanguage());
 							}));
 					authorization.authorizationRequestResolver(authorizationRequestResolver);
-				})//
-				.defaultSuccessUrl("/hello2", true) // ログイン後に遷移する画面を指定する場合
-				.failureHandler(failureHandler()));
+				});
+				oauth2.failureHandler(failureHandler());
+				
+				// 共通Login設定
+				SecurityConfigHelper.setCommonLoginSettings(oauth2, authProps);
+		});
 
 		// ログアウト
 		http.logout(logout -> {
@@ -83,36 +69,23 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 		});
 
 		// セッションがないときにどうするか？という設定
-		// 初回アクセスでセッションがないときも呼ばれることに注意。
-		// http.sessionManagement().invalidSessionUrl("/error?type=invalidSession");
+		// セッションがない初回アクセスの場合にも呼ばれる。
+		// セッションが無効になった場合にどうするか？ではないことに注意。
+		// http.sessionManagement().invalidSessionUrl("xxx");
 
-		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+		http.exceptionHandling().accessDeniedHandler(SecurityConfigHelper.accessDeniedHandler(authProps));
 
-		// 認証処理の開始処理のため、上書きしてはいけない。
+		// ログイン画面に遷移させる処理
 		// http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint());
 	}
 
 	private AuthenticationFailureHandler failureHandler() {
-		// TODO ログを仕込むためだけに拡張するべきか
+		// OAuth2Login において、認証エラーはシステムエラー扱い
 		var handler = new SimpleUrlAuthenticationFailureHandler(authProps.getFailureUrl());
-		// handler.setUseForward(true);
-		return handler;
+		return (request, response, exception) -> {
+			log.error("AuthenticationFailure: {}", exception.getMessage());
+			handler.onAuthenticationFailure(request, response, exception);
+		};
 	}
 
-	private AccessDeniedHandler accessDeniedHandler() {
-		//
-		// 例外により挙動変更
-		// - MissingCsrfTokenException: セッション切れ判定
-		// - Spring Session が有効になっていないと、この挙動にならない（？）
-		// - 上記以外: デフォルト実装(403エラー)
-		//
-
-		var handlers = new LinkedHashMap<Class<? extends AccessDeniedException>, AccessDeniedHandler>();
-
-		handlers.put(MissingCsrfTokenException.class, (request, response, e) -> {
-			new DefaultRedirectStrategy().sendRedirect(request, response, "/error?type=invalidSession");
-		});
-
-		return new DelegatingAccessDeniedHandler(handlers, new AccessDeniedHandlerImpl());
-	}
 }

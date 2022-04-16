@@ -56,14 +56,16 @@ server.error:
 common.auth:
   enabled: true
   failure-url: ${server.error.path}
+  #successUrl: /hello2
   oauth2-login:
-    enabled: true
+    enabled: false
     base-uri: http://localhost:18080/auth/realms/demo
     logout-uri: ${common.auth.oauth2-login.base-uri}/protocol/openid-connect/logout
     client-id: publicapp
     client-secret:
   form-login:
-    enabled: false
+    enabled: true
+    login-page: /login2
 
 ## データベース
 common.datasource:
