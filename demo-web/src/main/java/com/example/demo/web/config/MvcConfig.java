@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MvcConfig implements WebMvcConfigurer {
 	private final DemoInterceptor demoInterceptor;
-	
+	private String[] ignorPaths = { "/css/**", "/js/**", "/images/**", "/webjars/**", "/manage/health" };
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(demoInterceptor);
+		registry.addInterceptor(demoInterceptor).excludePathPatterns(ignorPaths);
 	}
 
 }
