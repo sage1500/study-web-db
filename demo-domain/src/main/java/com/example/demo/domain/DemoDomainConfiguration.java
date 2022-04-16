@@ -8,5 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @MapperScan("com.example.demo.domain.**.repository")
+@MapperScan(basePackages = "com.example.demo.domain.**.repository2", sqlSessionFactoryRef = "sqlSessionFactory2")
 public class DemoDomainConfiguration {
 }

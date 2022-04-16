@@ -3,3 +3,18 @@ spring.datasource:
   platform: h2
   driverClassName: org.h2.Driver
   url: jdbc:h2:mem:temp;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+  schema: classpath*:schema.sql
+  data: classpath*:data.sql
+  continue-on-error: true
+
+spring.datasource2:
+  platform: h2
+  driverClassName: org.h2.Driver
+  url: jdbc:h2:mem:temp2;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+  schema: classpath*:schema2.sql
+  data: classpath*:data2.sql
+  continue-on-error: true
+
+spring.h2.console:
+  enabled: true
+  path: /js/h2

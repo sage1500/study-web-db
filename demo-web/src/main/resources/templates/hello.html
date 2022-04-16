@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="layout/layout">
+	layout:decorate="~{layout/layout}">
 
 <head>
 <title>Hello</title>
@@ -14,6 +14,14 @@
 	<form th:action="@{/hello}" method="post">
 		<button name="post">Post</button>
 	</form>
+	
+	<ul>
+		<li><a th:href="@{/hello11}">hello11</a>
+		<li><a th:href="@{/hello12}">hello12</a>
+		<li><a th:href="@{/hello21}">hello21</a>
+		<li><a th:href="@{/hello22}">hello22</a>
+	</ul>
+	
 	
 	<form th:action="@{/logout}" method="post">
 		<button>ログアウト</button>
