@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @EnableWebSecurity
 @Order(SecurityProperties.BASIC_AUTH_ORDER - 1)
-@ConditionalOnProperty(prefix = "common.auth.oauth2login", name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "common.auth.oauth2-login", name = "enabled", havingValue = "true")
 @RequiredArgsConstructor
 @Slf4j
 public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {

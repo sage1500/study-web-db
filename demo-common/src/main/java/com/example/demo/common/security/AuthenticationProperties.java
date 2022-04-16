@@ -11,15 +11,22 @@ public class AuthenticationProperties {
 	private String[] ignorePaths = { "/css/**", "/js/**", "/img/**", "/webjars/**", "/management/health" };
 	private String[] permitPaths = { "/" };
 	private String postLogoutRedirectUri = "{baseUrl}/";
+	private String postLogoutUrl = "/";
 	private String failureUrl = "/error";
-	private OAuth2login oauth2login = new OAuth2login();
+	private OAuth2Login oauth2Login = new OAuth2Login();
+	private FormLogin formLogin = new FormLogin();
 
 	@Data
-	public static class OAuth2login {
+	public static class OAuth2Login {
 		private boolean enabled = false;
 		private String baseUri;
 		private String logoutUri;
 		private String clientId;
 		private String clientSecret;
+	}
+	
+	@Data
+	public static class FormLogin {
+		private boolean enabled = false;
 	}
 }

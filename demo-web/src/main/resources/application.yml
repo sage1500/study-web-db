@@ -56,12 +56,14 @@ server.error:
 common.auth:
   enabled: true
   failure-url: ${server.error.path}
-  oauth2login:
+  oauth2-login:
     enabled: true
     base-uri: http://localhost:18080/auth/realms/demo
-    logout-uri: ${common.auth.oauth2login.base-uri}/protocol/openid-connect/logout
+    logout-uri: ${common.auth.oauth2-login.base-uri}/protocol/openid-connect/logout
     client-id: publicapp
     client-secret:
+  form-login:
+    enabled: false
 
 ## データベース
 common.datasource:
@@ -70,4 +72,3 @@ common.datasource:
   database: postgres
   username: postgres
   password: postgres
-

@@ -27,7 +27,7 @@ public class ClientRegistrationConfig {
 				.getClientRegistrations(properties).values().stream()
 				.map(o -> ClientRegistration.withClientRegistration(o)
 						.providerConfigurationMetadata(
-								Map.of("end_session_endpoint", authProps.getOauth2login().getLogoutUri()))
+								Map.of("end_session_endpoint", authProps.getOauth2Login().getLogoutUri()))
 						.build())
 				.collect(Collectors.toList());
 
