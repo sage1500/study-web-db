@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AccessLoggingFilter implements Filter {
 
-	private String[] ignorPaths = { "/css/**", "/js/**", "/images/**", "/manage/health" };
+	private String[] ignorPaths = { "/css/**", "/js/**", "/images/**", "/webjars/**", "/manage/health" };
 
 	private RequestMatcher ignoreRequestMatcher;
 
