@@ -32,6 +32,11 @@ logging:
       max-history: 7
       max-file-size: 10KB
 
+## メッセージ設定
+spring.messages:
+  basename: messages.messages
+  cache-duration: -1
+
 ## Spring Session
 spring.session:
   store-type: none
