@@ -30,12 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 public class Database2Config {
 
 	@Bean
-	@ConfigurationProperties(prefix = "spring.datasource2")
+	@ConfigurationProperties("spring.datasource2")
 	public DataSourceProperties dataSourceProperties2() {
 		return new DataSourceProperties();
 	}
 
 	@Bean
+	@ConfigurationProperties("spring.datasource2.hikari")
 	public DataSource dataSource2(@Qualifier("dataSourceProperties2") DataSourceProperties properties) {
 		return properties.initializeDataSourceBuilder().build();
 	}

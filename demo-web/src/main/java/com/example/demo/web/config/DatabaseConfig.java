@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDatabaseInitializer;
 import org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers;
@@ -29,14 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 public class DatabaseConfig {
 	@Bean
 	@Primary
-	@ConfigurationProperties(prefix = "spring.datasource")
+	@ConfigurationProperties("spring.datasource")
 	public DataSourceProperties dataSourceProperties() {
 		return new DataSourceProperties();
 	}
 
 	@Bean
 	@Primary
-	public DataSource dataSource(@Qualifier("dataSourceProperties") DataSourceProperties properties) {
+	@ConfigurationProperties("spring.datasource.hikari")
+	public DataSource dataSource(DataSourceProperties properties) {
 		return properties.initializeDataSourceBuilder().build();
 	}
 
