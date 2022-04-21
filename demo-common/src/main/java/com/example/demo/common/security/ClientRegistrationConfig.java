@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesRegistrationAdapter;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import lombok.RequiredArgsConstructor;
 
 @Configuration
+@ConditionalOnClass(ClientRegistrationRepository.class)
 @RequiredArgsConstructor
 public class ClientRegistrationConfig {
 	private final AuthenticationProperties authProps;

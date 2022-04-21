@@ -1,0 +1,61 @@
+## プロファイル設定
+spring.profiles:
+  group:
+    local:
+      - dev
+      - common
+    prod:
+      - common
+    common:
+      - domain
+  default: local
+
+##
+server:
+  port: 8081
+
+## ログレベル設定
+logging.level:
+  '[com.example.demo]': debug
+  '[org.springframework.security]': info
+
+## ログファイル設定
+logging:
+  file:
+    path: target
+    name: ${logging.file.path}/api1.log
+  logback:
+    rollingpolicy:
+      clean-history-on-start: true
+      file-name-pattern: ${logging.file.path}/api1-%d{yyyy-MM-dd}.%i.log
+      max-history: 7
+      max-file-size: 10KB
+
+## Tomcat
+server.tomcat:
+  basedir: target/tomcat.${server.port:8080}
+
+server.servlet:
+  context-path: /api1
+
+## エラーページ設定
+server.error:
+  path: /error
+  include-binding-errors: always
+  include-exception: true
+  include-message: always
+  include-stacktrace: never
+  whitelabel.enabled: false
+
+## 認証
+common.auth:
+  enabled: true
+  permit-paths:
+    - /hello 
+  http-basic:
+    enabled: true
+
+## Basic認証のユーザ情報
+spring.security.user:
+  name: user1
+  password: user1

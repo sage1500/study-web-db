@@ -215,6 +215,7 @@
 		<module>demo-common</module>
 		<module>demo-domain</module>
 		<module>demo-web</module>
+		<module>demo-api1</module>
 		<module>demo-mbg-plugins</module>
 	</modules>
 
