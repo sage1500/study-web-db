@@ -6,10 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.entity.OrderExample;
@@ -25,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 public class HelloController {
 	private final OrderRepository orderRepository;
 	private final OrderRepository2 orderRepository2;
+	private final WebClient webClient;
+	private final OAuth2AuthorizedClientRepository clientRespository;
 
 	// @Secured("ROLE_ADMIN")
 	@GetMapping("/hello")
@@ -71,6 +76,32 @@ public class HelloController {
 	@GetMapping("/basic/hello")
 	public String hello3() {
 		log.info("[HELLO] hello3");
+		return "hello";
+	}
+
+	@GetMapping("hello4")
+	public String hello4(HttpServletRequest request) {
+		webClient.get().uri("/hello").retrieve().bodyToMono(String.class).block();
+		return "hello";
+	}
+
+	@GetMapping("hello5")
+	public String hello5(HttpServletRequest request) {
+		var authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication instanceof OAuth2AuthenticationToken) {
+			var regId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
+			log.info("[!] regId: {}", regId);
+
+			var authClient = clientRespository.loadAuthorizedClient(regId, authentication, request);
+			log.info("[!] client: {}", authClient);
+			log.info("[!] accessToken: {}", authClient.getAccessToken().getTokenValue());
+
+			webClient //
+					.get().uri("/hello2") //
+					//.headers(headers -> headers.setBearerAuth(authClient.getAccessToken().getTokenValue())) //
+					.retrieve().bodyToMono(String.class).block();
+		}
+
 		return "hello";
 	}
 
