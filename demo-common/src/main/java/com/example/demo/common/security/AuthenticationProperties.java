@@ -27,8 +27,15 @@ public class AuthenticationProperties {
 	}
 	
 	@Data
+	public static class OAuth2ResourceServer {
+		private boolean enabled = false;
+	}
+	
+	@Data
 	public static class FormLogin {
 		private boolean enabled = false;
 		private String loginPage = "/login";
 	}
+	
+	
 }

@@ -56,6 +56,9 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 				});
 				oauth2.failureHandler(failureHandler());
 				
+				// TODO 冗長構成の場合は、冗長構成に対応したリポジトリの登録が必要なはず。
+				// oauth2.authorizedClientRepository(null);
+				
 				// 共通Login設定
 				SecurityConfigHelper.setCommonLoginSettings(oauth2, authProps);
 		});

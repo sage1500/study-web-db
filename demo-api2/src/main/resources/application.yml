@@ -1,0 +1,67 @@
+## プロファイル設定
+spring.profiles:
+  group:
+    local:
+      - dev
+      - common
+    prod:
+      - common
+    common:
+      - domain
+  default: local
+
+##
+server:
+  port: 8082
+
+## ログレベル設定
+logging.level:
+  '[com.example.demo]': debug
+  '[org.springframework.security]': info
+
+## ログファイル設定
+logging:
+  file:
+    path: target
+    name: ${logging.file.path}/api2.log
+  logback:
+    rollingpolicy:
+      clean-history-on-start: true
+      file-name-pattern: ${logging.file.path}/api2-%d{yyyy-MM-dd}.%i.log
+      max-history: 7
+      max-file-size: 10KB
+
+## Tomcat
+server.tomcat:
+  basedir: target/tomcat.${server.port:8080}
+
+server.servlet:
+  context-path: /api2
+
+## エラーページ設定
+server.error:
+  path: /error
+  include-binding-errors: always
+  include-exception: true
+  include-message: always
+  include-stacktrace: never
+  whitelabel.enabled: false
+
+## 認証
+common.auth:
+  enabled: true
+  permit-paths:
+    - /hello 
+  oauth2-resource-server:
+    enabled: true
+
+spring.security.oauth2.resourceserver.jwt:
+  issuer-uri: http://localhost:18080/auth/realms/demo
+  #jwk-set-uri: null
+  #jws-algorithm: null
+  #public-key-location: null
+
+## Basic認証のユーザ情報
+spring.security.user:
+  name: user1
+  password: user1
