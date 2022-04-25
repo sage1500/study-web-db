@@ -56,10 +56,12 @@ common.auth:
     enabled: true
 
 spring.security.oauth2.resourceserver.jwt:
-  issuer-uri: http://localhost:18080/auth/realms/demo
+  #issuer-uri: http://localhost:18080/auth/realms/demo
   #jwk-set-uri: null
   #jws-algorithm: null
-  #public-key-location: null
+  #public-key-location: classpath:demo.pub
+  #public-key-location: file:./src/main/resources/demo.pub
+  public-key-location: file:/Users/sage/dev/study-web-db/demo-api2/src/main/resources/demo.pub
 
 ## Basic認証のユーザ情報
 spring.security.user:
