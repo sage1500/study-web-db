@@ -18,6 +18,7 @@ import com.example.demo.domain.entity.Order;
 import com.example.demo.domain.entity.OrderExample;
 import com.example.demo.domain.simple.repository.OrderRepository;
 import com.example.demo.domain.simple.repository2.OrderRepository2;
+import com.example.demo.web.config.MyBean;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ public class HelloController {
 	private final WebClient webClient;
 	private final OAuth2AuthorizedClientRepository clientRespository;
 
+	private final List<MyBean> myBeans;
+	
 	// @Secured("ROLE_ADMIN")
 	@GetMapping("/hello")
 	@Transactional
@@ -52,6 +55,11 @@ public class HelloController {
 		if (false) {
 			throw new RuntimeException("test");
 		}
+		
+		for (var b : myBeans) {
+			log.info("myBean {}", b);
+		}
+		
 
 		return "hello";
 		// return "redirect:/hello2";
