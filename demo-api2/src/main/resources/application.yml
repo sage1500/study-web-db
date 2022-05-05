@@ -1,3 +1,7 @@
+## アプリケーション設定
+spring.application:
+  name: demo-api2
+  
 ## プロファイル設定
 spring.profiles:
   group:
