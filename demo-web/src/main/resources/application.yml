@@ -1,3 +1,7 @@
+## アプリケーション設定
+spring.application:
+  name: demo-web
+    
 ## プロファイル設定
 spring.profiles:
   group:
@@ -12,7 +16,8 @@ spring.profiles:
       - domain
       - hoge
       - oauth2client
-      - oauth2client-public
+      #- oauth2client-public
+      - oauth2client-demoapp
   default: local
 
 ## ログレベル設定
@@ -66,9 +71,11 @@ common.auth:
     enabled: true
     base-uri: http://localhost:18080/auth/realms/demo
     logout-uri: ${common.auth.oauth2-login.base-uri}/protocol/openid-connect/logout
-    client-id: publicapp
-    client-secret:
-  form-login:
+    #client-id: publicapp
+    #client-secret:
+    client-id: demoapp
+    client-secret: 08c33835-c18c-4dd7-a7df-aee3479d17c4
+  form-login: 
     enabled: false
     login-page: /login2
 

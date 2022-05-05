@@ -28,5 +28,7 @@
 	<form th:action="@{/logout}" method="post">
 		<button>ログアウト</button>
 	</form>
+	
+	<div th:if="${message != null}" th:text=${message}></div>
 </body>
 </html>

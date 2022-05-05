@@ -42,25 +42,22 @@ public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// OAuth2 ログイン
 		http.oauth2Login(oauth2 -> {
-				oauth2.authorizationEndpoint(authorization -> {
-					DefaultOAuth2AuthorizationRequestResolver authorizationRequestResolver = new DefaultOAuth2AuthorizationRequestResolver(
-							clientRegistrationRepository,
-							OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
-					authorizationRequestResolver
-							.setAuthorizationRequestCustomizer(customizer -> customizer.additionalParameters(params -> {
-								var locale = LocaleContextHolder.getLocale();
-								log.debug("locale {}", locale.getLanguage());
-								params.put("ui_locales", locale.getLanguage());
-							}));
-					authorization.authorizationRequestResolver(authorizationRequestResolver);
-				});
-				oauth2.failureHandler(failureHandler());
-				
-				// TODO 冗長構成の場合は、冗長構成に対応したリポジトリの登録が必要なはず。
-				// oauth2.authorizedClientRepository(null);
-				
-				// 共通Login設定
-				SecurityConfigHelper.setCommonLoginSettings(oauth2, authProps);
+			oauth2.authorizationEndpoint(authorization -> {
+				DefaultOAuth2AuthorizationRequestResolver authorizationRequestResolver = new DefaultOAuth2AuthorizationRequestResolver(
+						clientRegistrationRepository,
+						OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI);
+				authorizationRequestResolver
+						.setAuthorizationRequestCustomizer(customizer -> customizer.additionalParameters(params -> {
+							var locale = LocaleContextHolder.getLocale();
+							log.debug("locale {}", locale.getLanguage());
+							params.put("ui_locales", locale.getLanguage());
+						}));
+				authorization.authorizationRequestResolver(authorizationRequestResolver);
+			});
+			oauth2.failureHandler(failureHandler());
+
+			// 共通Login設定
+			SecurityConfigHelper.setCommonLoginSettings(oauth2, authProps);
 		});
 
 		// ログアウト

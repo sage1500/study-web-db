@@ -6,10 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -30,7 +32,7 @@ public class HelloController {
 	private final OrderRepository orderRepository;
 	private final OrderRepository2 orderRepository2;
 	private final WebClient webClient;
-	private final OAuth2AuthorizedClientRepository clientRespository;
+	private final OAuth2AuthorizedClientService clientService;
 
 	private final List<MyBean> myBeans;
 	
@@ -94,20 +96,25 @@ public class HelloController {
 	}
 
 	@GetMapping("hello5")
-	public String hello5(HttpServletRequest request) {
+	public String hello5(HttpServletRequest request, Model model) {
 		var authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof OAuth2AuthenticationToken) {
 			var regId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
 			log.info("[!] regId: {}", regId);
 
-			var authClient = clientRespository.loadAuthorizedClient(regId, authentication, request);
-			log.info("[!] client: {}", authClient);
-			log.info("[!] accessToken: {}", authClient.getAccessToken().getTokenValue());
-
-			webClient //
+			var authClient = clientService.loadAuthorizedClient(regId, authentication.getName());
+			var accessToken = authClient.getAccessToken();
+			var refreshToken = authClient.getRefreshToken();
+			log.info("[!] accessToken: {}", accessToken.getTokenValue());
+			log.info("[!]   expires: {}", accessToken.getExpiresAt());
+			log.info("[!] refreshToken: {}", refreshToken.getTokenValue());
+			log.info("[!]   expires: {}", refreshToken.getExpiresAt());
+			
+			var result = webClient //
 					.get().uri("/hello2") //
 					//.headers(headers -> headers.setBearerAuth(authClient.getAccessToken().getTokenValue())) //
 					.retrieve().bodyToMono(String.class).block();
+			model.addAttribute("message", result);
 		}
 
 		return "hello";
@@ -170,4 +177,9 @@ public class HelloController {
 		return "hello";
 	}
 
+	@ExceptionHandler
+	public String handleException(Exception e, Model model) {
+		model.addAttribute("message", "throwed Exception. e=" + e.getMessage());
+		return "hello";
+	}
 }

@@ -18,7 +18,8 @@ public class Api2Config {
         var oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(clientRegistrations, authorizedClients);
 
         oauth.setDefaultOAuth2AuthorizedClient(true);
-        oauth.setDefaultClientRegistrationId("publicapp");
+        //oauth.setDefaultClientRegistrationId("publicapp");
+        //oauth.setDefaultClientRegistrationId("demoapp");
 
         // @formatter:off
         return WebClient.builder()
