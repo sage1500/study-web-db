@@ -14,6 +14,7 @@ public class AuthenticationProperties {
 	private String postLogoutUrl = "/";
 	private String failureUrl = "/error";
 	private String successUrl;
+	private boolean useDummyUser = false;
 	private OAuth2Login oauth2Login = new OAuth2Login();
 	private FormLogin formLogin = new FormLogin();
 

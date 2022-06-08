@@ -67,6 +67,7 @@ common.auth:
   enabled: true
   failure-url: ${server.error.path}
   #successUrl: /hello2
+  use-dummy-user: true
   oauth2-login:
     enabled: true
     base-uri: http://localhost:18080/auth/realms/demo
