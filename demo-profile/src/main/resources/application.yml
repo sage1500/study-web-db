@@ -1,0 +1,17 @@
+#demo.profile:
+#  type: p0
+
+spring:
+  profiles:
+    default: local
+    group:
+      local:
+      - p1
+      - p2
+      - p3
+      prod:
+      - common
+      - p1
+      common:
+      - p3
+    

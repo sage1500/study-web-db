@@ -11,7 +11,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.5</version>
-		<relativePath />
+		<relativePath/>
 	</parent>
 
 	<build>
@@ -94,6 +94,11 @@
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>demo-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>demo-autoconfigure</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -218,6 +223,8 @@
 		<module>demo-api1</module>
 		<module>demo-api2</module>
 		<module>demo-mbg-plugins</module>
+		<module>demo-profile</module>
+		<module>demo-autoconfigure</module>
 	</modules>
 
 </project>

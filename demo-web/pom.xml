@@ -18,6 +18,10 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>demo-domain</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>demo-autoconfigure</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
